@@ -55,8 +55,8 @@ TEST(infer, test_param_jump)
 
 TEST(infer, test_literal_valid_jump)
 {
-    auto ir =
-        local_stacks::LocalStacksIR(basic_blocks::BasicBlocksIR::unsafe_from(
+    auto ir = local_stacks::LocalStacksIR(
+        basic_blocks::BasicBlocksIR::unsafe_from(
             {PUSH1, 8, SWAP1, PUSH1, 1, ADD, SWAP1, JUMP, JUMPDEST, POP, POP}));
     std::vector<Block> blocks = infer_types(ir.jumpdests, std::move(ir.blocks));
 
@@ -75,8 +75,8 @@ TEST(infer, test_literal_valid_jump)
 
 TEST(infer, test_literal_invalid_jump)
 {
-    auto ir =
-        local_stacks::LocalStacksIR(basic_blocks::BasicBlocksIR::unsafe_from(
+    auto ir = local_stacks::LocalStacksIR(
+        basic_blocks::BasicBlocksIR::unsafe_from(
             {PUSH1, 0, SWAP1, PUSH1, 1, ADD, SWAP1, JUMP, JUMPDEST, POP, POP}));
     std::vector<Block> blocks = infer_types(ir.jumpdests, std::move(ir.blocks));
 
@@ -118,8 +118,8 @@ TEST(infer, test_return)
 
 TEST(infer, test_param_jumpi)
 {
-    auto ir =
-        local_stacks::LocalStacksIR(basic_blocks::BasicBlocksIR::unsafe_from(
+    auto ir = local_stacks::LocalStacksIR(
+        basic_blocks::BasicBlocksIR::unsafe_from(
             {PUSH1, 1, ADD, SWAP1, JUMPI, SELFDESTRUCT}));
     std::vector<Block> blocks = infer_types(ir.jumpdests, std::move(ir.blocks));
 
@@ -141,8 +141,8 @@ TEST(infer, test_param_jumpi)
 
 TEST(infer, test_literal_valid_jumpi)
 {
-    auto ir =
-        local_stacks::LocalStacksIR(basic_blocks::BasicBlocksIR::unsafe_from(
+    auto ir = local_stacks::LocalStacksIR(
+        basic_blocks::BasicBlocksIR::unsafe_from(
             {PUSH1, 4, JUMPI, SELFDESTRUCT, JUMPDEST, POP}));
     std::vector<Block> blocks = infer_types(ir.jumpdests, std::move(ir.blocks));
 
@@ -165,8 +165,8 @@ TEST(infer, test_literal_valid_jumpi)
 
 TEST(infer, test_literal_var_output)
 {
-    auto ir =
-        local_stacks::LocalStacksIR(basic_blocks::BasicBlocksIR::unsafe_from(
+    auto ir = local_stacks::LocalStacksIR(
+        basic_blocks::BasicBlocksIR::unsafe_from(
             {PUSH1,    255,      PUSH1, 14,    SWAP2, PUSH1, 17,       JUMPI,
              JUMPDEST, PUSH1,    1,     ADD,   SWAP1, JUMP,  JUMPDEST, POP,
              STOP,     JUMPDEST, SWAP1, PUSH1, 8,     JUMP}));
@@ -188,8 +188,8 @@ TEST(infer, test_sum)
 {
     uint8_t const loop = 1;
     uint8_t const ret = 14;
-    auto ir =
-        local_stacks::LocalStacksIR(basic_blocks::BasicBlocksIR::unsafe_from(
+    auto ir = local_stacks::LocalStacksIR(
+        basic_blocks::BasicBlocksIR::unsafe_from(
             {// Word,(Word,s -> Exit),s -> Exit
              DUP1, // Word,Word,(Word,s -> Exit),s -> Exit
                    // loop:
@@ -266,8 +266,8 @@ TEST(infer, test_fib)
     uint8_t const fibk = 17;
     uint8_t const addk = 28;
     uint8_t const retk = 32;
-    auto ir =
-        local_stacks::LocalStacksIR(basic_blocks::BasicBlocksIR::unsafe_from({
+    auto ir = local_stacks::LocalStacksIR(
+        basic_blocks::BasicBlocksIR::unsafe_from({
             // fib:
             JUMPDEST, // Word,(Word,s -> Exit),s -> Exit
             PUSH1,
@@ -368,8 +368,8 @@ TEST(infer, test_fib)
 
 TEST(infer, crash_1)
 {
-    auto ir =
-        local_stacks::LocalStacksIR(basic_blocks::BasicBlocksIR::unsafe_from(
+    auto ir = local_stacks::LocalStacksIR(
+        basic_blocks::BasicBlocksIR::unsafe_from(
             {JUMPDEST, ADDRESS, JUMPDEST, PUSH0, ADDRESS, JUMP}));
     std::vector<Block> blocks = infer_types(ir.jumpdests, std::move(ir.blocks));
     ASSERT_EQ(blocks.size(), 2);

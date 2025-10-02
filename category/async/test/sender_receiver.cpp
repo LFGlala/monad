@@ -578,8 +578,9 @@ TEST_F(AsyncIO, erased_complete_overloads_decay_to_void)
     out.reset();
     state.reset(std::tuple{}, std::tuple{});
     state.initiate();
-    state.completed(result<std::reference_wrapper<filled_read_buffer>>(
-        errc::address_in_use));
+    state.completed(
+        result<std::reference_wrapper<filled_read_buffer>>(
+            errc::address_in_use));
     ASSERT_TRUE(out.has_value());
     ASSERT_FALSE(*out);
     ASSERT_EQ(out->error(), errc::address_in_use);
@@ -596,8 +597,9 @@ TEST_F(AsyncIO, erased_complete_overloads_decay_to_void)
     out.reset();
     state.reset(std::tuple{}, std::tuple{});
     state.initiate();
-    state.completed(result<std::reference_wrapper<filled_write_buffer>>(
-        errc::address_in_use));
+    state.completed(
+        result<std::reference_wrapper<filled_write_buffer>>(
+            errc::address_in_use));
     ASSERT_TRUE(out.has_value());
     ASSERT_FALSE(*out);
     ASSERT_EQ(out->error(), errc::address_in_use);
@@ -660,8 +662,9 @@ TEST_F(AsyncIO, erased_complete_overloads_decay_to_bytes_transferred)
     out.reset();
     state.reset(std::tuple{}, std::tuple{});
     state.initiate();
-    state.completed(result<std::reference_wrapper<filled_read_buffer>>(
-        errc::address_in_use));
+    state.completed(
+        result<std::reference_wrapper<filled_read_buffer>>(
+            errc::address_in_use));
     ASSERT_TRUE(out.has_value());
     ASSERT_FALSE(*out);
     ASSERT_EQ(out->error(), errc::address_in_use);
@@ -678,8 +681,9 @@ TEST_F(AsyncIO, erased_complete_overloads_decay_to_bytes_transferred)
     out.reset();
     state.reset(std::tuple{}, std::tuple{});
     state.initiate();
-    state.completed(result<std::reference_wrapper<filled_write_buffer>>(
-        errc::address_in_use));
+    state.completed(
+        result<std::reference_wrapper<filled_write_buffer>>(
+            errc::address_in_use));
     ASSERT_TRUE(out.has_value());
     ASSERT_FALSE(*out);
     ASSERT_EQ(out->error(), errc::address_in_use);

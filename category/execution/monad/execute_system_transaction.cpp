@@ -85,11 +85,12 @@ Result<Receipt> ExecuteSystemTransaction<traits>::operator()()
         Transaction tx = tx_;
         tx.gas_limit =
             2'000'000; // required to pass intrinsic gas validation check
-        BOOST_OUTCOME_TRY(static_validate_transaction<traits>(
-            tx,
-            std::nullopt /* 0 base fee to pass validation */,
-            std::nullopt /* 0 blob fee to pass validation */,
-            chain_.get_chain_id()));
+        BOOST_OUTCOME_TRY(
+            static_validate_transaction<traits>(
+                tx,
+                std::nullopt /* 0 base fee to pass validation */,
+                std::nullopt /* 0 blob fee to pass validation */,
+                chain_.get_chain_id()));
     }
 
     {

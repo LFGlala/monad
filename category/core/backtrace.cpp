@@ -103,8 +103,9 @@ struct stack_backtrace_impl final : public stack_backtrace
     stack_backtrace_impl(
         std::span<std::byte> storage, void const *begin, size_t bytes)
         : main_alloc(storage, storage_end)
-        , stacktrace(stacktrace_implementation_type::from_dump(
-              begin, bytes, stacktrace_allocator_type{main_alloc}))
+        , stacktrace(
+              stacktrace_implementation_type::from_dump(
+                  begin, bytes, stacktrace_allocator_type{main_alloc}))
     {
     }
 

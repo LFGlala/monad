@@ -160,9 +160,10 @@ class threadsafe_boost_fibers_promise<void>
 
 public:
     threadsafe_boost_fibers_promise()
-        : state_(std::make_shared<std::pair<
-                     ::boost::fibers::promise<void>,
-                     ::boost::fibers::future<void>>>())
+        : state_(
+              std::make_shared<std::pair<
+                  ::boost::fibers::promise<void>,
+                  ::boost::fibers::future<void>>>())
     {
     }
 

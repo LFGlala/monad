@@ -826,8 +826,9 @@ TEST(Evm, nested_call_to_delegated_precompile)
     // PUSH0; PUSH0; PUSH0; PUSH0; PUSH20 eoa; PUSH1 100; DELEGATECALL;
     // PUSH1 0x20; JUMPI; INVALID; JUMPDEST[20]
     auto const contract_code =
-        evmc::from_hex("5f5f5f5f7300000000000000000000000000000000aaaaaaaa6064f"
-                       "4602057fe5b")
+        evmc::from_hex(
+            "5f5f5f5f7300000000000000000000000000000000aaaaaaaa6064f"
+            "4602057fe5b")
             .value();
     auto const contract_icode = vm::make_shared_intercode(contract_code);
     auto const contract_code_hash = to_bytes(keccak256(contract_code));
