@@ -156,6 +156,8 @@ jobs:
 
     python-code-quality:
         name: Python code quality checks
+        permissions:
+          contents: read
         runs-on: ubuntu-24.04
         steps:
             - uses: actions/checkout@v4
