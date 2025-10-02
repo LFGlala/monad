@@ -248,14 +248,15 @@ Result<std::vector<Receipt>> BlockchainTest::execute_and_record(
     std::vector<Receipt> receipts;
     std::vector<std::vector<CallFrame>> call_frames;
 
-    auto result = record_block_result(execute<traits>(
-        block,
-        db,
-        vm,
-        block_hash_buffer,
-        enable_tracing,
-        receipts,
-        call_frames));
+    auto result = record_block_result(
+        execute<traits>(
+            block,
+            db,
+            vm,
+            block_hash_buffer,
+            enable_tracing,
+            receipts,
+            call_frames));
     if (result.has_error()) {
         // TODO(ken): why is std::move required here?
         return std::move(result.error());

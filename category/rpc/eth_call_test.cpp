@@ -888,9 +888,10 @@ TEST_F(EthCallFixture, expensive_read_out_of_gas)
         BlockHeader{.number = 0});
 
     auto const data =
-        evmc::from_hex("0x56cde25b000000000000000000000000000000000000000000000"
-                       "0000000000000000000000000000000000000000000000000000000"
-                       "0000000000000000000000004e20")
+        evmc::from_hex(
+            "0x56cde25b000000000000000000000000000000000000000000000"
+            "0000000000000000000000000000000000000000000000000000000"
+            "0000000000000000000000004e20")
             .value();
     Transaction tx{.gas_limit = 30'000'000u, .to = ca, .data = data};
 
@@ -1135,9 +1136,10 @@ TEST_F(EthCallFixture, call_trace_with_logs)
     static constexpr auto a_address =
         0x00000000000000000000000000000000aaaaaaaa_address;
     auto const a_code =
-        evmc::from_hex("600160025f5fa25f5f5f5f5f7300000000000000000000000000000"
-                       "000bbbbbbbb5af115604d575f5f5f5f5f7300000000000000000000"
-                       "000000000000cccccccc5af115604d5760035f5fa1005bfe")
+        evmc::from_hex(
+            "600160025f5fa25f5f5f5f5f7300000000000000000000000000000"
+            "000bbbbbbbb5af115604d575f5f5f5f5f7300000000000000000000"
+            "000000000000cccccccc5af115604d5760035f5fa1005bfe")
             .value();
     auto const a_code_hash = to_bytes(keccak256(a_code));
     auto const a_icode = monad::vm::make_shared_intercode(a_code);

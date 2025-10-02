@@ -917,9 +917,10 @@ TEST_F(StateSyncFixture, update_contract_twice)
         to_bytes(keccak256(rlp::encode_block_header(stdb.read_eth_header())));
 
     auto const code =
-        evmc::from_hex("7ffffffffffffffffffffffffffffffffffffffffffffffffffffff"
-                       "fffffffffff7fffffffffffffffffffffffffffffffffffffffffff"
-                       "ffffffffffffffffffffff0160005500")
+        evmc::from_hex(
+            "7ffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+            "fffffffffff7fffffffffffffffffffffffffffffffffffffffffff"
+            "ffffffffffffffffffffff0160005500")
             .value();
     auto const code_hash = to_bytes(keccak256(code));
     auto const icode = vm::make_shared_intercode(code);

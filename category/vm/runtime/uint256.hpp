@@ -43,7 +43,7 @@ extern "C" void monad_vm_runtime_mul(
 
 namespace monad::vm::runtime
 {
-    [[gnu::always_inline]] constexpr inline uint64_t
+    [[gnu::always_inline]] inline constexpr uint64_t
     force(uint64_t expr) noexcept
     {
         if !consteval {
@@ -68,7 +68,7 @@ namespace monad::vm::runtime
     };
 
     [[gnu::always_inline]]
-    constexpr inline result_with_carry<uint64_t> addc_constexpr(
+    inline constexpr result_with_carry<uint64_t> addc_constexpr(
         uint64_t const lhs, uint64_t const rhs, bool const carry_in) noexcept
     {
         uint64_t const sum = lhs + rhs;
@@ -91,7 +91,7 @@ namespace monad::vm::runtime
     }
 
     [[gnu::always_inline]]
-    constexpr inline result_with_carry<uint64_t>
+    inline constexpr result_with_carry<uint64_t>
     addc(uint64_t const lhs, uint64_t const rhs, bool const carry_in) noexcept
     {
         if consteval {
@@ -102,7 +102,7 @@ namespace monad::vm::runtime
         }
     }
 
-    [[gnu::always_inline]] constexpr inline result_with_carry<uint64_t>
+    [[gnu::always_inline]] inline constexpr result_with_carry<uint64_t>
     subb_constexpr(
         uint64_t const lhs, uint64_t const rhs, bool const borrow_in) noexcept
     {
@@ -126,7 +126,7 @@ namespace monad::vm::runtime
             .value = force(sub_borrow), .carry = static_cast<bool>(borrow_out)};
     }
 
-    [[gnu::always_inline]] constexpr inline result_with_carry<uint64_t>
+    [[gnu::always_inline]] inline constexpr result_with_carry<uint64_t>
     subb(uint64_t const lhs, uint64_t const rhs, bool const borrow_in) noexcept
     {
         if consteval {
@@ -216,7 +216,7 @@ namespace monad::vm::runtime
     typedef __int128 int128_t;
 
     [[gnu::always_inline]]
-    constexpr inline div_result<uint64_t>
+    inline constexpr div_result<uint64_t>
     div_constexpr(uint64_t u_hi, uint64_t u_lo, uint64_t const v) noexcept
     {
         auto u = (static_cast<uint128_t>(u_hi) << 64) | u_lo;
@@ -234,7 +234,7 @@ namespace monad::vm::runtime
     }
 
     [[gnu::always_inline]]
-    constexpr inline div_result<uint64_t>
+    inline constexpr div_result<uint64_t>
     div(uint64_t u_hi, uint64_t u_lo, uint64_t const v) noexcept
     {
         MONAD_VM_DEBUG_ASSERT(u_hi < v);
@@ -962,7 +962,7 @@ namespace monad::vm::runtime
         return result;
     }
 
-    [[gnu::always_inline]] constexpr inline div_result<uint256_t>
+    [[gnu::always_inline]] inline constexpr div_result<uint256_t>
     udivrem(uint256_t const &u, uint256_t const &v) noexcept
     {
         auto r = udivrem(u.as_words(), v.as_words());

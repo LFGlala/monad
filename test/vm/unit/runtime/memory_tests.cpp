@@ -141,37 +141,41 @@ TEST_F(RuntimeTest, ExpandMemory)
     ASSERT_EQ(ctx_.memory.size, Memory::initial_capacity + 32);
     ASSERT_EQ(ctx_.memory.capacity, new_capacity);
     ASSERT_EQ(ctx_.memory.cost, 419);
-    ASSERT_TRUE(std::all_of(
-        ctx_.memory.data, ctx_.memory.data + ctx_.memory.size, [](auto b) {
-            return b == 0;
-        }));
+    ASSERT_TRUE(
+        std::all_of(
+            ctx_.memory.data, ctx_.memory.data + ctx_.memory.size, [](auto b) {
+                return b == 0;
+            }));
 
     ctx_.expand_memory(Bin<30>::unsafe_from(Memory::initial_capacity + 90));
     ASSERT_EQ(ctx_.memory.size, Memory::initial_capacity + 96);
     ASSERT_EQ(ctx_.memory.capacity, new_capacity);
     ASSERT_EQ(ctx_.memory.cost, 426);
-    ASSERT_TRUE(std::all_of(
-        ctx_.memory.data, ctx_.memory.data + ctx_.memory.size, [](auto b) {
-            return b == 0;
-        }));
+    ASSERT_TRUE(
+        std::all_of(
+            ctx_.memory.data, ctx_.memory.data + ctx_.memory.size, [](auto b) {
+                return b == 0;
+            }));
 
     ctx_.expand_memory(Bin<30>::unsafe_from(new_capacity));
     ASSERT_EQ(ctx_.memory.size, new_capacity);
     ASSERT_EQ(ctx_.memory.capacity, new_capacity);
     ASSERT_EQ(ctx_.memory.cost, 904);
-    ASSERT_TRUE(std::all_of(
-        ctx_.memory.data, ctx_.memory.data + ctx_.memory.size, [](auto b) {
-            return b == 0;
-        }));
+    ASSERT_TRUE(
+        std::all_of(
+            ctx_.memory.data, ctx_.memory.data + ctx_.memory.size, [](auto b) {
+                return b == 0;
+            }));
 
     ctx_.expand_memory(Bin<30>::unsafe_from(Memory::initial_capacity * 4 + 1));
     ASSERT_EQ(ctx_.memory.size, Memory::initial_capacity * 4 + 32);
     ASSERT_EQ(ctx_.memory.capacity, (Memory::initial_capacity * 4 + 32) * 2);
     ASSERT_EQ(ctx_.memory.cost, 2053);
-    ASSERT_TRUE(std::all_of(
-        ctx_.memory.data, ctx_.memory.data + ctx_.memory.size, [](auto b) {
-            return b == 0;
-        }));
+    ASSERT_TRUE(
+        std::all_of(
+            ctx_.memory.data, ctx_.memory.data + ctx_.memory.size, [](auto b) {
+                return b == 0;
+            }));
 }
 
 TEST_F(RuntimeTest, ExpandMemoryNotUsingCachedAllocatorFreeRegression)
@@ -199,37 +203,41 @@ TEST_F(RuntimeTest, RuntimeIncreaseMemory)
     ASSERT_EQ(ctx_.memory.size, Memory::initial_capacity + 32);
     ASSERT_EQ(ctx_.memory.capacity, new_capacity);
     ASSERT_EQ(ctx_.memory.cost, 419);
-    ASSERT_TRUE(std::all_of(
-        ctx_.memory.data, ctx_.memory.data + ctx_.memory.size, [](auto b) {
-            return b == 0;
-        }));
+    ASSERT_TRUE(
+        std::all_of(
+            ctx_.memory.data, ctx_.memory.data + ctx_.memory.size, [](auto b) {
+                return b == 0;
+            }));
 
     monad_vm_runtime_increase_memory(
         Bin<30>::unsafe_from(Memory::initial_capacity + 90), &ctx_);
     ASSERT_EQ(ctx_.memory.size, Memory::initial_capacity + 96);
     ASSERT_EQ(ctx_.memory.capacity, new_capacity);
     ASSERT_EQ(ctx_.memory.cost, 426);
-    ASSERT_TRUE(std::all_of(
-        ctx_.memory.data, ctx_.memory.data + ctx_.memory.size, [](auto b) {
-            return b == 0;
-        }));
+    ASSERT_TRUE(
+        std::all_of(
+            ctx_.memory.data, ctx_.memory.data + ctx_.memory.size, [](auto b) {
+                return b == 0;
+            }));
 
     monad_vm_runtime_increase_memory(Bin<30>::unsafe_from(new_capacity), &ctx_);
     ASSERT_EQ(ctx_.memory.size, new_capacity);
     ASSERT_EQ(ctx_.memory.capacity, new_capacity);
     ASSERT_EQ(ctx_.memory.cost, 904);
-    ASSERT_TRUE(std::all_of(
-        ctx_.memory.data, ctx_.memory.data + ctx_.memory.size, [](auto b) {
-            return b == 0;
-        }));
+    ASSERT_TRUE(
+        std::all_of(
+            ctx_.memory.data, ctx_.memory.data + ctx_.memory.size, [](auto b) {
+                return b == 0;
+            }));
 
     monad_vm_runtime_increase_memory(
         Bin<30>::unsafe_from(Memory::initial_capacity * 4 + 1), &ctx_);
     ASSERT_EQ(ctx_.memory.size, Memory::initial_capacity * 4 + 32);
     ASSERT_EQ(ctx_.memory.capacity, (Memory::initial_capacity * 4 + 32) * 2);
     ASSERT_EQ(ctx_.memory.cost, 2053);
-    ASSERT_TRUE(std::all_of(
-        ctx_.memory.data, ctx_.memory.data + ctx_.memory.size, [](auto b) {
-            return b == 0;
-        }));
+    ASSERT_TRUE(
+        std::all_of(
+            ctx_.memory.data, ctx_.memory.data + ctx_.memory.size, [](auto b) {
+                return b == 0;
+            }));
 }
