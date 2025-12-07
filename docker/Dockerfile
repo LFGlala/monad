@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1-labs
 
-FROM ubuntu:25.04 AS base
+FROM ubuntu:questing-20251007 AS base
 
 RUN apt update && apt upgrade -y
 
