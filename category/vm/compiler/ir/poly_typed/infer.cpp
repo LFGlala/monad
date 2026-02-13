@@ -732,13 +732,14 @@ namespace
         blocks.reserve(state.pre_blocks.size());
         for (block_id i = 0; i < state.pre_blocks.size(); ++i) {
             auto &pre_block = state.pre_blocks[i];
-            blocks.push_back(Block{
-                .offset = pre_block.offset,
-                .min_params = pre_block.min_params,
-                .output = std::move(pre_block.output),
-                .instrs = std::move(pre_block.instrs),
-                .kind = std::move(state.block_types.at(i)),
-                .terminator = std::move(state.block_terminators.at(i))});
+            blocks.push_back(
+                Block{
+                    .offset = pre_block.offset,
+                    .min_params = pre_block.min_params,
+                    .output = std::move(pre_block.output),
+                    .instrs = std::move(pre_block.instrs),
+                    .kind = std::move(state.block_types.at(i)),
+                    .terminator = std::move(state.block_terminators.at(i))});
         }
         return blocks;
     }

@@ -148,10 +148,11 @@ namespace monad::vm::llvm
 
                 llvm.insert_at(lbl);
 
-                llvm.debug(std::format(
-                    "\nblock {} is {}\n",
-                    blk.offset,
-                    is_jumpdest(blk) ? "jumpdest" : "fall through"));
+                llvm.debug(
+                    std::format(
+                        "\nblock {} is {}\n",
+                        blk.offset,
+                        is_jumpdest(blk) ? "jumpdest" : "fall through"));
 
                 if (is_jumpdest(blk)) {
                     llvm.debug("clear stack and update stack_top\n");
@@ -162,9 +163,10 @@ namespace monad::vm::llvm
                 }
 
                 else {
-                    llvm.debug(std::format(
-                        "carry over stack (size = {}) and stack_top\n",
-                        stack.size()));
+                    llvm.debug(
+                        std::format(
+                            "carry over stack (size = {}) and stack_top\n",
+                            stack.size()));
                 }
 
                 // compute low/delta/high stack water marks
@@ -172,12 +174,13 @@ namespace monad::vm::llvm
 
                 llvm.debug(std::format("virtstack size={}\n", stack.size()));
 
-                llvm.debug(std::format(
-                    "low={}, high={}, delta={}, total_delta={}\n",
-                    low,
-                    high,
-                    delta,
-                    total_delta));
+                llvm.debug(
+                    std::format(
+                        "low={}, high={}, delta={}, total_delta={}\n",
+                        low,
+                        high,
+                        delta,
+                        total_delta));
 
                 if (low < -1024 || // impossible to not be out of bounds
                     high > 1024 || (blk.terminator == Jump && !any_jumpdests)) {
@@ -387,11 +390,12 @@ namespace monad::vm::llvm
         {
             auto sz = stack.size();
 
-            llvm.debug(std::format(
-                "unspilling stack size {}, low = {}, net = {}\n",
-                sz,
-                -low,
-                sz + low));
+            llvm.debug(
+                std::format(
+                    "unspilling stack size {}, low = {}, net = {}\n",
+                    sz,
+                    -low,
+                    sz + low));
 
             for (int64_t i = -sz - 1; i >= low; --i) {
                 llvm.debug(std::format("unspilling stack index {}\n", i));
@@ -620,8 +624,9 @@ namespace monad::vm::llvm
             auto fallthrough_is_jumpdest = is_jumpdest(fallthrough_block);
 
             if (fallthrough_is_jumpdest) {
-                llvm.debug("jumpi fallthrough is jumpdest, spilling prior to "
-                           "condbr\n");
+                llvm.debug(
+                    "jumpi fallthrough is jumpdest, spilling prior to "
+                    "condbr\n");
                 stack_spill(stack, stack_top, stack_top_updated);
             }
             else {

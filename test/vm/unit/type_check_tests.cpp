@@ -31,8 +31,9 @@ using namespace monad::vm::compiler::poly_typed;
 
 TEST(type_check, test_1)
 {
-    auto ir = PolyTypedIR(local_stacks::LocalStacksIR(
-        basic_blocks::BasicBlocksIR::unsafe_from({ADD})));
+    auto ir = PolyTypedIR(
+        local_stacks::LocalStacksIR(
+            basic_blocks::BasicBlocksIR::unsafe_from({ADD})));
 
     std::vector<Kind> const front = ir.blocks[0].kind->front;
 
@@ -51,8 +52,9 @@ TEST(type_check, test_1)
 
 TEST(type_check, test_2)
 {
-    auto ir = PolyTypedIR(local_stacks::LocalStacksIR(
-        basic_blocks::BasicBlocksIR::unsafe_from({JUMP})));
+    auto ir = PolyTypedIR(
+        local_stacks::LocalStacksIR(
+            basic_blocks::BasicBlocksIR::unsafe_from({JUMP})));
 
     std::vector<Kind> const front = ir.blocks[0].kind->front;
     ContKind const jump = std::get<Jump>(ir.blocks[0].terminator).jump_kind;
@@ -80,23 +82,24 @@ TEST(type_check, test_2)
 TEST(type_check, test_3)
 {
     auto ir = PolyTypedIR(
-        local_stacks::LocalStacksIR(basic_blocks::BasicBlocksIR::unsafe_from(
-            {// Word,Word,Word,s -> Exit
-             PUSH1,
-             12,
-             DUP1,
-             SWAP2,
-             ADD,
-             PUSH1,
-             9,
-             JUMPI,
-             // (s -> Exit),s -> Exit
-             JUMP,
-             JUMPDEST, // a,Word,Word,s -> Exit
-             POP,
-             RETURN,
-             JUMPDEST, // Word,Word,s -> Exit
-             RETURN})));
+        local_stacks::LocalStacksIR(
+            basic_blocks::BasicBlocksIR::unsafe_from(
+                {// Word,Word,Word,s -> Exit
+                 PUSH1,
+                 12,
+                 DUP1,
+                 SWAP2,
+                 ADD,
+                 PUSH1,
+                 9,
+                 JUMPI,
+                 // (s -> Exit),s -> Exit
+                 JUMP,
+                 JUMPDEST, // a,Word,Word,s -> Exit
+                 POP,
+                 RETURN,
+                 JUMPDEST, // Word,Word,s -> Exit
+                 RETURN})));
 
     ASSERT_TRUE(
         alpha_equal(ir.blocks[0].kind, cont_kind({word, word, word}, 0)));
@@ -166,16 +169,17 @@ TEST(type_check, test_3)
 TEST(type_check, test_4)
 {
     auto ir = PolyTypedIR(
-        local_stacks::LocalStacksIR(basic_blocks::BasicBlocksIR::unsafe_from(
-            {// Word,(s -> Exit),((s -> Exit),s -> Exit),s -> Exit
-             PUSH1,
-             12,
-             ADD,
-             SWAP1,
-             SWAP2,
-             JUMPI,
-             // (s -> Exit),s -> Exit
-             JUMP})));
+        local_stacks::LocalStacksIR(
+            basic_blocks::BasicBlocksIR::unsafe_from(
+                {// Word,(s -> Exit),((s -> Exit),s -> Exit),s -> Exit
+                 PUSH1,
+                 12,
+                 ADD,
+                 SWAP1,
+                 SWAP2,
+                 JUMPI,
+                 // (s -> Exit),s -> Exit
+                 JUMP})));
 
     ASSERT_TRUE(alpha_equal(
         ir.blocks[0].kind,
@@ -248,23 +252,24 @@ TEST(type_check, test_4)
 TEST(type_check, test_5)
 {
     auto ir = PolyTypedIR(
-        local_stacks::LocalStacksIR(basic_blocks::BasicBlocksIR::unsafe_from({
-            // (Word : (Word : Word,s -> Exit),(Word : Word,s -> Exit),s ->
-            // Exit),(Word : Word,s -> Exit),s -> Exit
-            DUP2, // a1,a0,a1,s1 -> Exit
-            SWAP1, // a0,a1,a1,s1 -> Exit
-            DUP2, // a1,a0,a1,a1,s1 -> Exit
-            DUP2, // a0,a1,a0,a1,a1,s1 -> Exit
-            ADD, // Word,a0,a1,a1,s1 -> Exit
-            SWAP1, // a0,Word,a1,a1,s1 -> Exit
-            JUMPI, // a1,a1,s1 -> Exit
-            // Word,(Word,s -> Exit),s -> Exit
-            PUSH1,
-            1, // Word,Word,(Word,s -> Exit),s -> Exit
-            ADD, // Word,(Word,s -> Exit),s -> Exit
-            SWAP1, // (Word,s -> Exit),Word,s -> Exit
-            JUMP // Word,s -> Exit
-        })));
+        local_stacks::LocalStacksIR(
+            basic_blocks::BasicBlocksIR::unsafe_from({
+                // (Word : (Word : Word,s -> Exit),(Word : Word,s -> Exit),s ->
+                // Exit),(Word : Word,s -> Exit),s -> Exit
+                DUP2, // a1,a0,a1,s1 -> Exit
+                SWAP1, // a0,a1,a1,s1 -> Exit
+                DUP2, // a1,a0,a1,a1,s1 -> Exit
+                DUP2, // a0,a1,a0,a1,a1,s1 -> Exit
+                ADD, // Word,a0,a1,a1,s1 -> Exit
+                SWAP1, // a0,Word,a1,a1,s1 -> Exit
+                JUMPI, // a1,a1,s1 -> Exit
+                // Word,(Word,s -> Exit),s -> Exit
+                PUSH1,
+                1, // Word,Word,(Word,s -> Exit),s -> Exit
+                ADD, // Word,(Word,s -> Exit),s -> Exit
+                SWAP1, // (Word,s -> Exit),Word,s -> Exit
+                JUMP // Word,s -> Exit
+            })));
 
     ASSERT_TRUE(alpha_equal(
         ir.blocks[0].kind,
@@ -366,14 +371,15 @@ TEST(type_check, test_5)
 TEST(type_check, test_6)
 {
     auto ir = PolyTypedIR(
-        local_stacks::LocalStacksIR(basic_blocks::BasicBlocksIR::unsafe_from(
-            {// (Any,Any,s -> Exit),Word,s -> Exit
-             DUP1, // a,a,Word,s -> Exit
-             SWAP2, // Word,a,a,s -> Exit
-             DUP2, // a,Word,a,a,s -> Exit
-             JUMPI, // a,a,s -> Exit
-             POP,
-             STOP})));
+        local_stacks::LocalStacksIR(
+            basic_blocks::BasicBlocksIR::unsafe_from(
+                {// (Any,Any,s -> Exit),Word,s -> Exit
+                 DUP1, // a,a,Word,s -> Exit
+                 SWAP2, // Word,a,a,s -> Exit
+                 DUP2, // a,Word,a,a,s -> Exit
+                 JUMPI, // a,a,s -> Exit
+                 POP,
+                 STOP})));
 
     ASSERT_TRUE(alpha_equal(
         ir.blocks[0].kind,
@@ -444,8 +450,9 @@ TEST(type_check, test_6)
 TEST(type_check, test_7)
 {
     auto ir = PolyTypedIR(
-        local_stacks::LocalStacksIR(basic_blocks::BasicBlocksIR::unsafe_from(
-            {DUP1, ADD, JUMPDEST, DUP1, PUSH1, 1, ADD, JUMP})));
+        local_stacks::LocalStacksIR(
+            basic_blocks::BasicBlocksIR::unsafe_from(
+                {DUP1, ADD, JUMPDEST, DUP1, PUSH1, 1, ADD, JUMP})));
 
     ASSERT_TRUE(alpha_equal(ir.blocks[0].kind, cont_kind({word})));
     ASSERT_TRUE(alpha_equal(
@@ -549,8 +556,9 @@ TEST(type_check, test_7)
 
 TEST(type_check, error_1)
 {
-    auto ir = PolyTypedIR(local_stacks::LocalStacksIR(
-        basic_blocks::BasicBlocksIR::unsafe_from({DUP3, DUP4, JUMPI})));
+    auto ir = PolyTypedIR(
+        local_stacks::LocalStacksIR(
+            basic_blocks::BasicBlocksIR::unsafe_from({DUP3, DUP4, JUMPI})));
     ASSERT_TRUE(ir.type_check());
 }
 
@@ -572,8 +580,9 @@ TEST(type_check, error_2)
         0x5b,     0xb5,     MULMOD,   MULMOD,   MULMOD,   MULMOD,   JUMPDEST,
         JUMPDEST, PUSH1,    0x5b,     JUMPDEST, DUP5};
 
-    auto ir = PolyTypedIR(local_stacks::LocalStacksIR(
-        basic_blocks::BasicBlocksIR::unsafe_from(std::move(ir1))));
+    auto ir = PolyTypedIR(
+        local_stacks::LocalStacksIR(
+            basic_blocks::BasicBlocksIR::unsafe_from(std::move(ir1))));
 
     ASSERT_TRUE(ir.type_check());
 }
@@ -586,8 +595,9 @@ TEST(type_check, error_3)
          0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30,
          0x30, 0x30, 0x30, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x57,
          0x57, 0x57, 0x57, 0x8a, 0x57, 0x30, 0x89, 0xff});
-    auto ir = PolyTypedIR(local_stacks::LocalStacksIR(
-        basic_blocks::BasicBlocksIR::unsafe_from(std::move(ir1))));
+    auto ir = PolyTypedIR(
+        local_stacks::LocalStacksIR(
+            basic_blocks::BasicBlocksIR::unsafe_from(std::move(ir1))));
     ASSERT_TRUE(ir.type_check());
 }
 

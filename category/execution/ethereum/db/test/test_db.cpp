@@ -511,23 +511,27 @@ TYPED_TEST(DBTest, commit_receipts_transactions)
     EXPECT_EQ(tdb.receipts_root(), NULL_ROOT);
 
     std::vector<Receipt> receipts;
-    receipts.emplace_back(Receipt{
-        .status = 1, .gas_used = 21'000, .type = TransactionType::legacy});
-    receipts.emplace_back(Receipt{
-        .status = 1, .gas_used = 42'000, .type = TransactionType::legacy});
+    receipts.emplace_back(
+        Receipt{
+            .status = 1, .gas_used = 21'000, .type = TransactionType::legacy});
+    receipts.emplace_back(
+        Receipt{
+            .status = 1, .gas_used = 42'000, .type = TransactionType::legacy});
 
     // receipt with log
     Receipt rct{
         .status = 1, .gas_used = 65'092, .type = TransactionType::legacy};
-    rct.add_log(Receipt::Log{
-        .data = from_hex("0x000000000000000000000000000000000000000000000000000"
-                         "000000000000000000000000000000000000043b2126e7a22e0c2"
-                         "88dfb469e3de4d2c097f3ca000000000000000000000000000000"
-                         "0000000000000000001195387bce41fd499000000000000000000"
-                         "0000000000000000000000000000000000000000000000"),
-        .topics =
-            {0xf341246adaac6f497bc2a656f546ab9e182111d630394f0c57c710a59a2cb567_bytes32},
-        .address = 0x8d12a197cb00d4747a1fe03395095ce2a5cc6819_address});
+    rct.add_log(
+        Receipt::Log{
+            .data = from_hex(
+                "0x000000000000000000000000000000000000000000000000000"
+                "000000000000000000000000000000000000043b2126e7a22e0c2"
+                "88dfb469e3de4d2c097f3ca000000000000000000000000000000"
+                "0000000000000000001195387bce41fd499000000000000000000"
+                "0000000000000000000000000000000000000000000000"),
+            .topics =
+                {0xf341246adaac6f497bc2a656f546ab9e182111d630394f0c57c710a59a2cb567_bytes32},
+            .address = 0x8d12a197cb00d4747a1fe03395095ce2a5cc6819_address});
     receipts.push_back(std::move(rct));
 
     std::vector<Transaction> transactions;
@@ -640,10 +644,12 @@ TYPED_TEST(DBTest, commit_receipts_transactions)
     // A new receipt trie with eip1559 transaction type
     constexpr uint64_t second_block = 2;
     receipts.clear();
-    receipts.emplace_back(Receipt{
-        .status = 1, .gas_used = 34865, .type = TransactionType::eip1559});
-    receipts.emplace_back(Receipt{
-        .status = 1, .gas_used = 77969, .type = TransactionType::eip1559});
+    receipts.emplace_back(
+        Receipt{
+            .status = 1, .gas_used = 34865, .type = TransactionType::eip1559});
+    receipts.emplace_back(
+        Receipt{
+            .status = 1, .gas_used = 77969, .type = TransactionType::eip1559});
     transactions.clear();
     t1.nonce = 12;
     t2.nonce = 13;
@@ -952,8 +958,9 @@ TYPED_TEST(DBTest, call_frames_stress_test)
         block.value().transactions.size());
     std::vector<std::unique_ptr<CallTracerBase>> call_tracers;
     for (size_t i = 0; i < block.value().transactions.size(); ++i) {
-        call_tracers.emplace_back(std::make_unique<CallTracer>(
-            block.value().transactions[i], call_frames[i]));
+        call_tracers.emplace_back(
+            std::make_unique<CallTracer>(
+                block.value().transactions[i], call_frames[i]));
     }
 
     auto const receipts = execute_block<EvmTraits<EVMC_SHANGHAI>>(
@@ -1054,8 +1061,9 @@ TYPED_TEST(DBTest, assertion_exception)
         block.value().transactions.size());
     std::vector<std::unique_ptr<CallTracerBase>> call_tracers;
     for (size_t i = 0; i < block.value().transactions.size(); ++i) {
-        call_tracers.emplace_back(std::make_unique<CallTracer>(
-            block.value().transactions[i], call_frames[i]));
+        call_tracers.emplace_back(
+            std::make_unique<CallTracer>(
+                block.value().transactions[i], call_frames[i]));
     }
 
     EXPECT_THROW(
@@ -1150,8 +1158,9 @@ TYPED_TEST(DBTest, call_frames_refund)
         block.value().transactions.size());
     std::vector<std::unique_ptr<CallTracerBase>> call_tracers;
     for (size_t i = 0; i < block.value().transactions.size(); ++i) {
-        call_tracers.emplace_back(std::make_unique<CallTracer>(
-            block.value().transactions[i], call_frames[i]));
+        call_tracers.emplace_back(
+            std::make_unique<CallTracer>(
+                block.value().transactions[i], call_frames[i]));
     }
 
     auto const receipts = execute_block<EvmTraits<EVMC_SHANGHAI>>(

@@ -108,38 +108,39 @@ void CallTracer::on_enter(evmc_message const &msg)
         to = msg.code_address;
     }
 
-    frames_.emplace_back(CallFrame{
-        .type =
-            [kind = msg.kind] {
-                switch (kind) {
-                case EVMC_CALL:
-                    return CallType::CALL;
-                case EVMC_DELEGATECALL:
-                    return CallType::DELEGATECALL;
-                case EVMC_CALLCODE:
-                    return CallType::CALLCODE;
-                case EVMC_CREATE:
-                    return CallType::CREATE;
-                case EVMC_CREATE2:
-                    return CallType::CREATE2;
-                default:
-                    MONAD_ASSERT(false);
-                }
-            }(),
-        .flags = msg.flags,
-        .from = from,
-        .to = to,
-        .value = intx::be::load<uint256_t>(msg.value),
-        .gas = depth_ == 0 ? tx_.gas_limit : static_cast<uint64_t>(msg.gas),
-        .gas_used = 0,
-        .input = msg.input_data == nullptr
-                     ? byte_string{}
-                     : byte_string{msg.input_data, msg.input_size},
-        .output = {},
-        .status = EVMC_FAILURE,
-        .depth = depth_,
-        .logs = std::vector<CallFrame::Log>{},
-    });
+    frames_.emplace_back(
+        CallFrame{
+            .type =
+                [kind = msg.kind] {
+                    switch (kind) {
+                    case EVMC_CALL:
+                        return CallType::CALL;
+                    case EVMC_DELEGATECALL:
+                        return CallType::DELEGATECALL;
+                    case EVMC_CALLCODE:
+                        return CallType::CALLCODE;
+                    case EVMC_CREATE:
+                        return CallType::CREATE;
+                    case EVMC_CREATE2:
+                        return CallType::CREATE2;
+                    default:
+                        MONAD_ASSERT(false);
+                    }
+                }(),
+            .flags = msg.flags,
+            .from = from,
+            .to = to,
+            .value = intx::be::load<uint256_t>(msg.value),
+            .gas = depth_ == 0 ? tx_.gas_limit : static_cast<uint64_t>(msg.gas),
+            .gas_used = 0,
+            .input = msg.input_data == nullptr
+                         ? byte_string{}
+                         : byte_string{msg.input_data, msg.input_size},
+            .output = {},
+            .status = EVMC_FAILURE,
+            .depth = depth_,
+            .logs = std::vector<CallFrame::Log>{},
+        });
 
     last_.push(frames_.size() - 1);
 }
@@ -189,19 +190,20 @@ void CallTracer::on_self_destruct(Address const &from, Address const &to)
 
     // we don't change depth_ here, because exit and enter combined
     // together here
-    frames_.emplace_back(CallFrame{
-        .type = CallType::SELFDESTRUCT,
-        .flags = 0,
-        .from = from,
-        .to = to,
-        .value = 0,
-        .gas = 0,
-        .gas_used = 0,
-        .input = {},
-        .output = {},
-        .status = EVMC_SUCCESS, // TODO
-        .depth = depth_ + 1,
-    });
+    frames_.emplace_back(
+        CallFrame{
+            .type = CallType::SELFDESTRUCT,
+            .flags = 0,
+            .from = from,
+            .to = to,
+            .value = 0,
+            .gas = 0,
+            .gas_used = 0,
+            .input = {},
+            .output = {},
+            .status = EVMC_SUCCESS, // TODO
+            .depth = depth_ + 1,
+        });
 }
 
 void CallTracer::on_finish(uint64_t const gas_used)

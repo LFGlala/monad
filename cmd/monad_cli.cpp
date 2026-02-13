@@ -209,8 +209,9 @@ struct DbStateMachine
 
         fmt::println("Success! Set version to {}\n", curr_version);
         if (list_finalized_and_proposals(version)) {
-            fmt::println("Type \"proposal [block_id]\" or "
-                         "\"finalized\" to set section");
+            fmt::println(
+                "Type \"proposal [block_id]\" or "
+                "\"finalized\" to set section");
         }
         else {
             fmt::println(
@@ -224,8 +225,9 @@ struct DbStateMachine
     bool list_finalized_and_proposals(uint64_t const version)
     {
         if (version == INVALID_BLOCK_NUM) {
-            fmt::println("Error: invalid version to list sections, set to a "
-                         "valid version and try again");
+            fmt::println(
+                "Error: invalid version to list sections, set to a "
+                "valid version and try again");
             return false;
         }
         auto const finalized_res = db.find(finalized_nibbles, version);
@@ -247,8 +249,9 @@ struct DbStateMachine
     void set_proposal_or_finalized(bytes32_t const &block_id)
     {
         if (state != DbState::version_number) {
-            fmt::println("Error: at wrong part of trie, only allow set section "
-                         "when cursor is set to a version.");
+            fmt::println(
+                "Error: at wrong part of trie, only allow set section "
+                "when cursor is set to a version.");
             return;
         }
         MONAD_ASSERT(curr_section_prefix.nibble_size() == 0);
@@ -286,8 +289,9 @@ struct DbStateMachine
     void set_table(unsigned char table_id)
     {
         if (state != DbState::proposal_or_finalize) {
-            fmt::println("Error: at wrong part of trie, only allow set table "
-                         "when cursor is set to a specific version number.");
+            fmt::println(
+                "Error: at wrong part of trie, only allow set table "
+                "when cursor is set to a specific version number.");
             return;
         }
         MONAD_ASSERT(curr_section_prefix.nibble_size() > 0);
@@ -310,10 +314,12 @@ struct DbStateMachine
                                                 : to_bytes(cursor.node->data());
                     fmt::println(" * Merkle root is {}", merkle_root);
                 }
-                fmt::println(" * \"node_stats\" will display a summary of node "
-                             "metadata");
-                fmt::println(" * Next, try look up a key in this table using "
-                             "\"get [key]\"");
+                fmt::println(
+                    " * \"node_stats\" will display a summary of node "
+                    "metadata");
+                fmt::println(
+                    " * Next, try look up a key in this table using "
+                    "\"get [key]\"");
             }
             else {
                 fmt::println(
@@ -323,16 +329,18 @@ struct DbStateMachine
             }
         }
         else {
-            fmt::println("Invalid table id: choose table id from 0: state, "
-                         "1: code, 2: receipt.");
+            fmt::println(
+                "Invalid table id: choose table id from 0: state, "
+                "1: code, 2: receipt.");
         }
     }
 
     Result<NodeCursor> lookup(NibblesView const key) const
     {
         if (state != DbState::table) {
-            fmt::println("Error: at wrong part of trie, please navigate cursor "
-                         "to a table before lookup.");
+            fmt::println(
+                "Error: at wrong part of trie, please navigate cursor "
+                "to a table before lookup.");
         }
         MONAD_ASSERT(!curr_section_prefix.empty());
         MONAD_ASSERT(curr_table_id != INVALID_NIBBLE);
@@ -551,8 +559,9 @@ void do_get_receipt(DbStateMachine &sm, std::string_view const receipt)
     size_t receipt_id{};
 
     if (receipt.starts_with("0x")) {
-        fmt::println("Receipts should be entered in base 10 and will be "
-                     "encoded for you.");
+        fmt::println(
+            "Receipts should be entered in base 10 and will be "
+            "encoded for you.");
         return;
     }
     auto [_, ec] = std::from_chars(
@@ -680,8 +689,9 @@ void do_node_stats(DbStateMachine &sm)
 int interactive_impl(Db &db)
 {
     if (!isatty(STDIN_FILENO)) {
-        fmt::println("Not running interactively! Pass -it to run inside a "
-                     "docker container.");
+        fmt::println(
+            "Not running interactively! Pass -it to run inside a "
+            "docker container.");
         return 1;
     }
 
@@ -724,8 +734,9 @@ int interactive_impl(Db &db)
                 do_proposal(state_machine, tokens[1]);
             }
             else {
-                fmt::println("Wrong format to set proposal, type 'proposal "
-                             "[block_id]'");
+                fmt::println(
+                    "Wrong format to set proposal, type 'proposal "
+                    "[block_id]'");
             }
         }
         else if (tokens[0] == "finalized") {
@@ -736,8 +747,9 @@ int interactive_impl(Db &db)
                 do_table(state_machine, tokens[1]);
             }
             else {
-                fmt::println("Wrong format to set table, type 'table "
-                             "[state/code/receipt]'");
+                fmt::println(
+                    "Wrong format to set table, type 'table "
+                    "[state/code/receipt]'");
             }
         }
         else if (tokens[0] == "get") {

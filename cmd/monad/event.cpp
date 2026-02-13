@@ -91,11 +91,13 @@ try_parse_event_ring_config(std::string_view s)
     }
 
     if (size(tokens) < 1 || size(tokens) > 3) {
-        return std::unexpected(std::format(
-            "input `{}` does not have "
-            "expected format "
-            "<ring-name-or-path>[:<descriptor-shift>:<payload-buffer-shift>]",
-            s));
+        return std::unexpected(
+            std::format(
+                "input `{}` does not have "
+                "expected format "
+                "<ring-name-or-path>[:<descriptor-shift>:<payload-buffer-shift>"
+                "]",
+                s));
     }
     cfg.event_ring_spec = tokens[0];
     if (size(tokens) < 2 || tokens[1].empty()) {
@@ -112,8 +114,11 @@ try_parse_event_ring_config(std::string_view s)
     }
     else if (auto err = try_parse_int_token(tokens[2], &cfg.payload_buf_shift);
              !empty(err)) {
-        return std::unexpected(std::format(
-            "parse error in payload_buffer_shift `{}`: {}", tokens[2], err));
+        return std::unexpected(
+            std::format(
+                "parse error in payload_buffer_shift `{}`: {}",
+                tokens[2],
+                err));
     }
 
     return cfg;

@@ -108,8 +108,9 @@ TEST(MonadChain, Genesis)
         EXPECT_EQ(
             hash,
             0x1436534e54a22183ea29a2273b341cb50018ed066441ffd111cd263297caba35_bytes32);
-        EXPECT_TRUE(static_validate_header<EvmTraits<EVMC_FRONTIER>>(header)
-                        .has_value());
+        EXPECT_TRUE(
+            static_validate_header<EvmTraits<EVMC_FRONTIER>>(header)
+                .has_value());
         // the header generated at the time was not a valid header for the
         // cancun revision
         EXPECT_FALSE(
@@ -128,8 +129,9 @@ TEST(MonadChain, Genesis)
         EXPECT_EQ(
             hash,
             0xb711505d8f46fc921ae824f847f26c5c3657bf6c8b9dcf07ffdf3357a143bca9_bytes32);
-        EXPECT_TRUE(static_validate_header<EvmTraits<EVMC_FRONTIER>>(header)
-                        .has_value());
+        EXPECT_TRUE(
+            static_validate_header<EvmTraits<EVMC_FRONTIER>>(header)
+                .has_value());
         // the header generated at the time was not a valid header for the
         // cancun revision
         EXPECT_FALSE(

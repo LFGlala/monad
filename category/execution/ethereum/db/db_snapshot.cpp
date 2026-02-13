@@ -401,12 +401,13 @@ void monad_db_snapshot_loader_load(
             MONAD_ASSERT(res.has_value());
             auto &update = account_offset_to_update.at(account_offset);
             uint64_t const consumed = before.size() - storage_view.size();
-            update.next.push_front(loader->update_alloc.emplace_back(Update{
-                .key = loader->hash_alloc.emplace_back(
-                    keccak256(to_bytes(res.value().first))),
-                .value = before.substr(0, consumed),
-                .next = UpdateList{},
-                .version = static_cast<int64_t>(loader->block)}));
+            update.next.push_front(loader->update_alloc.emplace_back(
+                Update{
+                    .key = loader->hash_alloc.emplace_back(
+                        keccak256(to_bytes(res.value().first))),
+                    .value = before.substr(0, consumed),
+                    .next = UpdateList{},
+                    .version = static_cast<int64_t>(loader->block)}));
             loader->bytes_read += consumed;
             if (loader->bytes_read >= BYTES_READ_BEFORE_FLUSH) {
                 monad_db_snapshot_loader_flush(loader);
@@ -422,8 +423,8 @@ void monad_db_snapshot_loader_load(
             code_view.remove_prefix(sizeof(uint64_t));
             MONAD_ASSERT(code_view.size() >= size);
             byte_string_view const val = code_view.substr(0, size);
-            loader->code_updates.push_front(
-                loader->update_alloc.emplace_back(Update{
+            loader->code_updates.push_front(loader->update_alloc.emplace_back(
+                Update{
                     .key = loader->hash_alloc.emplace_back(keccak256(val)),
                     .value = val,
                     .incarnation = false,

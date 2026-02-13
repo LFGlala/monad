@@ -71,34 +71,37 @@ void monad_statesync_client_context::commit()
             auto const &[acct, deltas] = delta.value();
             value = bytes_alloc.emplace_back(encode_account_db(addr, acct));
             for (auto const &[key, val] : deltas) {
-                storage.push_front(alloc.emplace_back(Update{
-                    .key = hash_alloc.emplace_back(keccak256(key.bytes)),
-                    .value = val == bytes32_t{}
-                                 ? std::nullopt
-                                 : std::make_optional<byte_string_view>(
-                                       bytes_alloc.emplace_back(
-                                           encode_storage_db(key, val))),
-                    .incarnation = false,
-                    .next = UpdateList{},
-                    .version = static_cast<int64_t>(current)}));
+                storage.push_front(alloc.emplace_back(
+                    Update{
+                        .key = hash_alloc.emplace_back(keccak256(key.bytes)),
+                        .value = val == bytes32_t{}
+                                     ? std::nullopt
+                                     : std::make_optional<byte_string_view>(
+                                           bytes_alloc.emplace_back(
+                                               encode_storage_db(key, val))),
+                        .incarnation = false,
+                        .next = UpdateList{},
+                        .version = static_cast<int64_t>(current)}));
             }
         }
-        accounts.push_front(alloc.emplace_back(Update{
-            .key = hash_alloc.emplace_back(keccak256(addr.bytes)),
-            .value = value,
-            .incarnation = false,
-            .next = std::move(storage),
-            .version = static_cast<int64_t>(current)}));
+        accounts.push_front(alloc.emplace_back(
+            Update{
+                .key = hash_alloc.emplace_back(keccak256(addr.bytes)),
+                .value = value,
+                .incarnation = false,
+                .next = std::move(storage),
+                .version = static_cast<int64_t>(current)}));
     }
     UpdateList code_updates;
 
     for (auto const &[hash, bytes] : code) {
-        code_updates.push_front(alloc.emplace_back(Update{
-            .key = NibblesView{hash},
-            .value = bytes,
-            .incarnation = false,
-            .next = UpdateList{},
-            .version = static_cast<int64_t>(current)}));
+        code_updates.push_front(alloc.emplace_back(
+            Update{
+                .key = NibblesView{hash},
+                .value = bytes,
+                .incarnation = false,
+                .next = UpdateList{},
+                .version = static_cast<int64_t>(current)}));
     }
 
     auto state_update = Update{

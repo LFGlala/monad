@@ -39,8 +39,9 @@ GenesisState MonadTestnet2::get_genesis_state() const
 {
     BlockHeader header;
     header.gas_limit = 5000;
-    header.extra_data = evmc::from_hex("0x0000000000000000000000000000000000000"
-                                       "000000000000000000000000000")
+    header.extra_data = evmc::from_hex(
+                            "0x0000000000000000000000000000000000000"
+                            "000000000000000000000000000")
                             .value();
     header.base_fee_per_gas = 0;
     header.withdrawals_root = NULL_ROOT;

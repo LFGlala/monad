@@ -31,8 +31,9 @@ using namespace monad::vm::compiler::untyped;
 
 TEST(untyped, test_invalid)
 {
-    auto ir = poly_typed::PolyTypedIR(local_stacks::LocalStacksIR(
-        basic_blocks::BasicBlocksIR::unsafe_from({ADD})));
+    auto ir = poly_typed::PolyTypedIR(
+        local_stacks::LocalStacksIR(
+            basic_blocks::BasicBlocksIR::unsafe_from({ADD})));
 
     auto blocks_may = build_untyped(ir.jumpdests, std::move(ir.blocks));
     ASSERT_FALSE(
@@ -42,8 +43,9 @@ TEST(untyped, test_invalid)
 TEST(untyped, dead_code)
 {
     auto ir = poly_typed::PolyTypedIR(
-        local_stacks::LocalStacksIR(basic_blocks::BasicBlocksIR::unsafe_from(
-            {PUSH0, STOP, JUMPDEST, PUSH0, SLOAD, JUMP})));
+        local_stacks::LocalStacksIR(
+            basic_blocks::BasicBlocksIR::unsafe_from(
+                {PUSH0, STOP, JUMPDEST, PUSH0, SLOAD, JUMP})));
     auto blocks_may = build_untyped(ir.jumpdests, std::move(ir.blocks));
     ASSERT_TRUE(
         std::holds_alternative<std::vector<untyped::Block>>(blocks_may));
@@ -55,8 +57,9 @@ TEST(untyped, dead_code)
 TEST(untyped, unsupported_sload_jump)
 {
     auto ir = poly_typed::PolyTypedIR(
-        local_stacks::LocalStacksIR(basic_blocks::BasicBlocksIR::unsafe_from(
-            {JUMPDEST, PUSH0, SLOAD, JUMP})));
+        local_stacks::LocalStacksIR(
+            basic_blocks::BasicBlocksIR::unsafe_from(
+                {JUMPDEST, PUSH0, SLOAD, JUMP})));
     auto blocks_may = build_untyped(ir.jumpdests, std::move(ir.blocks));
     ASSERT_FALSE(
         std::holds_alternative<std::vector<untyped::Block>>(blocks_may));
@@ -65,8 +68,9 @@ TEST(untyped, unsupported_sload_jump)
 TEST(untyped, test_computed_literal_jump)
 {
     auto ir = poly_typed::PolyTypedIR(
-        local_stacks::LocalStacksIR(basic_blocks::BasicBlocksIR::unsafe_from(
-            {PUSH1, 5, PUSH1, 1, ADD, JUMP, JUMPDEST, STOP})));
+        local_stacks::LocalStacksIR(
+            basic_blocks::BasicBlocksIR::unsafe_from(
+                {PUSH1, 5, PUSH1, 1, ADD, JUMP, JUMPDEST, STOP})));
 
     auto blocks_may = build_untyped(ir.jumpdests, std::move(ir.blocks));
     ASSERT_TRUE(
@@ -82,10 +86,11 @@ TEST(untyped, test_computed_literal_jump)
 TEST(untyped, test_jumpi_word_cont)
 {
     auto ir = poly_typed::PolyTypedIR(
-        local_stacks::LocalStacksIR(basic_blocks::BasicBlocksIR::unsafe_from(
-            {JUMPDEST, PUSH1, 0xc,    PUSH0, PUSH1,    0xe,      JUMPI,
-             JUMPDEST, PUSH1, 0x12,   SWAP1, JUMP,     JUMPDEST, JUMP,
-             JUMPDEST, PUSH0, SSTORE, STOP,  JUMPDEST, STOP})));
+        local_stacks::LocalStacksIR(
+            basic_blocks::BasicBlocksIR::unsafe_from(
+                {JUMPDEST, PUSH1, 0xc,    PUSH0, PUSH1,    0xe,      JUMPI,
+                 JUMPDEST, PUSH1, 0x12,   SWAP1, JUMP,     JUMPDEST, JUMP,
+                 JUMPDEST, PUSH0, SSTORE, STOP,  JUMPDEST, STOP})));
 
     auto blocks_may = build_untyped(ir.jumpdests, std::move(ir.blocks));
     ASSERT_TRUE(
@@ -107,10 +112,11 @@ TEST(untyped, test_jumpi_word_cont)
 TEST(untyped, test_jump_coerce_multiple)
 {
     auto ir = poly_typed::PolyTypedIR(
-        local_stacks::LocalStacksIR(basic_blocks::BasicBlocksIR::unsafe_from(
-            {JUMPDEST, PUSH1, 0xe,      DUP1,  PUSH1,  0x9,   PUSH1,
-             0xe,      JUMP,  JUMPDEST, PUSH1, 0x10,   SWAP1, JUMP,
-             JUMPDEST, JUMP,  JUMPDEST, PUSH0, SSTORE, STOP})));
+        local_stacks::LocalStacksIR(
+            basic_blocks::BasicBlocksIR::unsafe_from(
+                {JUMPDEST, PUSH1, 0xe,      DUP1,  PUSH1,  0x9,   PUSH1,
+                 0xe,      JUMP,  JUMPDEST, PUSH1, 0x10,   SWAP1, JUMP,
+                 JUMPDEST, JUMP,  JUMPDEST, PUSH0, SSTORE, STOP})));
 
     auto blocks_may = build_untyped(ir.jumpdests, std::move(ir.blocks));
     ASSERT_TRUE(
@@ -128,20 +134,21 @@ TEST(untyped, test_jump_coerce_multiple)
 TEST(untyped, test_jump_word)
 {
     auto ir = poly_typed::PolyTypedIR(
-        local_stacks::LocalStacksIR(basic_blocks::BasicBlocksIR::unsafe_from(
-            {JUMPDEST,
-             PUSH1,
-             0xb,
-             PUSH1,
-             0x6,
-             JUMP,
-             JUMPDEST,
-             DUP1,
-             DUP1,
-             SSTORE,
-             JUMP,
-             JUMPDEST,
-             STOP})));
+        local_stacks::LocalStacksIR(
+            basic_blocks::BasicBlocksIR::unsafe_from(
+                {JUMPDEST,
+                 PUSH1,
+                 0xb,
+                 PUSH1,
+                 0x6,
+                 JUMP,
+                 JUMPDEST,
+                 DUP1,
+                 DUP1,
+                 SSTORE,
+                 JUMP,
+                 JUMPDEST,
+                 STOP})));
 
     auto blocks_may = build_untyped(ir.jumpdests, std::move(ir.blocks));
     ASSERT_TRUE(
@@ -161,33 +168,34 @@ TEST(untyped, test_jump_word)
 TEST(untyped, test_jump_addr)
 {
     auto ir = poly_typed::PolyTypedIR(
-        local_stacks::LocalStacksIR(basic_blocks::BasicBlocksIR::unsafe_from(
-            {// 0x0:
-             JUMPDEST,
-             PUSH1,
-             0xf,
-             PUSH1,
-             0x6,
-             JUMP,
+        local_stacks::LocalStacksIR(
+            basic_blocks::BasicBlocksIR::unsafe_from(
+                {// 0x0:
+                 JUMPDEST,
+                 PUSH1,
+                 0xf,
+                 PUSH1,
+                 0x6,
+                 JUMP,
 
-             // 0x6 : (Word : s0 -> Exit),s0 -> Exit
-             JUMPDEST,
-             DUP1,
-             PUSH1,
-             0xb,
-             JUMP, // : Word,(s0 -> Exit),s0 -> Exit <- we must coerce here
-                   // because the duplicated input changed from a WordCont to
-                   // Cont, due to the jump to 0xb
+                 // 0x6 : (Word : s0 -> Exit),s0 -> Exit
+                 JUMPDEST,
+                 DUP1,
+                 PUSH1,
+                 0xb,
+                 JUMP, // : Word,(s0 -> Exit),s0 -> Exit <- we must coerce here
+                       // because the duplicated input changed from a WordCont
+                       // to Cont, due to the jump to 0xb
 
-             // 0xb : Word,(s0 -> Exit),s0 -> Exit
-             JUMPDEST,
-             DUP1,
-             SSTORE,
-             JUMP,
+                 // 0xb : Word,(s0 -> Exit),s0 -> Exit
+                 JUMPDEST,
+                 DUP1,
+                 SSTORE,
+                 JUMP,
 
-             // 0xf: s0 -> Exit
-             JUMPDEST,
-             STOP})));
+                 // 0xf: s0 -> Exit
+                 JUMPDEST,
+                 STOP})));
 
     auto blocks_may = build_untyped(ir.jumpdests, std::move(ir.blocks));
     ASSERT_TRUE(
@@ -209,18 +217,19 @@ TEST(untyped, test_jump_addr)
 TEST(untyped, dead_cont_words)
 {
     auto ir = poly_typed::PolyTypedIR(
-        local_stacks::LocalStacksIR(basic_blocks::BasicBlocksIR::unsafe_from(
-            {STOP,
-             JUMPDEST, // this block has type Word... -> Exit, hence we mark it
-                       // as dead code because the entry-point has a valid type
-                       // of s0 -> Exit
-             DUP1,
-             DUP1,
-             SSTORE,
-             DUP1,
-             DUP1,
-             JUMPI,
-             JUMP})));
+        local_stacks::LocalStacksIR(
+            basic_blocks::BasicBlocksIR::unsafe_from(
+                {STOP,
+                 JUMPDEST, // this block has type Word... -> Exit, hence we mark
+                           // it as dead code because the entry-point has a
+                           // valid type of s0 -> Exit
+                 DUP1,
+                 DUP1,
+                 SSTORE,
+                 DUP1,
+                 DUP1,
+                 JUMPI,
+                 JUMP})));
 
     auto blocks_may = build_untyped(ir.jumpdests, std::move(ir.blocks));
     ASSERT_TRUE(
@@ -233,32 +242,34 @@ TEST(untyped, dead_cont_words)
 TEST(untyped, pad_output_stack)
 {
     auto ir = poly_typed::PolyTypedIR(
-        local_stacks::LocalStacksIR(basic_blocks::BasicBlocksIR::unsafe_from(
-            {PUSH1,
-             0xf,
-             PUSH1,
-             0xf,
-             PUSH1,
-             0x7,
-             JUMP,
+        local_stacks::LocalStacksIR(
+            basic_blocks::BasicBlocksIR::unsafe_from(
+                {PUSH1,
+                 0xf,
+                 PUSH1,
+                 0xf,
+                 PUSH1,
+                 0x7,
+                 JUMP,
 
-             // 0x7 : Word,(Word : s1 -> Exit),s1 -> Exit
-             JUMPDEST,
-             PUSH1,
-             0xb,
-             JUMP, // here the output stack is only a single value, but the
-                   // output stack type is Word,(Word : s1 -> Exit),s1 -> Exit,
-                   // hence we need to pad out theoutput stack to 0xb, %p0, %p1
+                 // 0x7 : Word,(Word : s1 -> Exit),s1 -> Exit
+                 JUMPDEST,
+                 PUSH1,
+                 0xb,
+                 JUMP, // here the output stack is only a single value, but the
+                       // output stack type is Word,(Word : s1 -> Exit),s1 ->
+                       // Exit, hence we need to pad out theoutput stack to 0xb,
+                       // %p0, %p1
 
-             // 0xb : Word,(Word : s0 -> Exit),s0 -> Exit
-             JUMPDEST,
-             DUP2,
-             SSTORE,
-             JUMP,
+                 // 0xb : Word,(Word : s0 -> Exit),s0 -> Exit
+                 JUMPDEST,
+                 DUP2,
+                 SSTORE,
+                 JUMP,
 
-             // 0xf : s0 -> Exit
-             JUMPDEST,
-             STOP})));
+                 // 0xf : s0 -> Exit
+                 JUMPDEST,
+                 STOP})));
 
     auto blocks_may = build_untyped(ir.jumpdests, std::move(ir.blocks));
     ASSERT_TRUE(

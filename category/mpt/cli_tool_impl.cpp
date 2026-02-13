@@ -490,9 +490,10 @@ public:
              << ".\n     It has been configured to retain no more than "
              << aux.version_history_length() << ".\n     Latest voted is ("
              << aux.get_latest_voted_version() << ", "
-             << evmc::hex(monad::byte_string_view(
-                    aux.get_latest_voted_block_id().bytes,
-                    sizeof(monad::bytes32_t)))
+             << evmc::hex(
+                    monad::byte_string_view(
+                        aux.get_latest_voted_block_id().bytes,
+                        sizeof(monad::bytes32_t)))
              << ").\n     Latest finalized is "
              << aux.get_latest_finalized_version() << ", latest verified is "
              << aux.get_latest_verified_version() << ", auto expire version is "
@@ -1273,8 +1274,9 @@ public:
                     }
                     else if (
                         max_concurrency == 0 &&
-                        i.compression_thread.wait_for(std::chrono::milliseconds(
-                            10)) != std::future_status::timeout) {
+                        i.compression_thread.wait_for(
+                            std::chrono::milliseconds(10)) !=
+                            std::future_status::timeout) {
                         i.compression_thread.get();
                         {
                             auto const dist =

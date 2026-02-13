@@ -411,11 +411,12 @@ Result<Receipt> ExecuteTransaction<traits>::operator()()
 {
     TRACE_TXN_EVENT(StartTxn);
 
-    BOOST_OUTCOME_TRY(static_validate_transaction<traits>(
-        tx_,
-        header_.base_fee_per_gas,
-        header_.excess_blob_gas,
-        chain_.get_chain_id()));
+    BOOST_OUTCOME_TRY(
+        static_validate_transaction<traits>(
+            tx_,
+            header_.base_fee_per_gas,
+            header_.excess_blob_gas,
+            chain_.get_chain_id()));
 
     {
         TRACE_TXN_EVENT(StartExecution);

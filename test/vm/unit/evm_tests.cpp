@@ -487,9 +487,10 @@ TEST_F(EvmTest, EthCallOutOfGas)
             .value();
 
     auto const data =
-        evmc::from_hex("0x56cde25b000000000000000000000000000000000000000000000"
-                       "0000000000000000000000000000000000000000000000000000000"
-                       "0000000000000000000000004e20")
+        evmc::from_hex(
+            "0x56cde25b000000000000000000000000000000000000000000000"
+            "0000000000000000000000000000000000000000000000000000000"
+            "0000000000000000000000004e20")
             .value();
 
     execute(30'000'000, code, data, Implementation::Interpreter);
@@ -531,7 +532,8 @@ TEST_F(EvmTest, Int32BlockGasOverflow)
 
 INSTANTIATE_TEST_SUITE_P(
     EvmTest, EvmFile,
-    ::testing::ValuesIn(std::vector<fs::directory_entry>{
-        fs::directory_iterator(monad::test_resource::regression_tests_dir),
-        {}}),
+    ::testing::ValuesIn(
+        std::vector<fs::directory_entry>{
+            fs::directory_iterator(monad::test_resource::regression_tests_dir),
+            {}}),
     [](auto const &info) { return info.param.path().stem().string(); });

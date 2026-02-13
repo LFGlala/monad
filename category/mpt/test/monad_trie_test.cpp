@@ -476,8 +476,9 @@ int main(int argc, char *argv[])
             // init uring
             monad::io::Ring ring1(
                 monad::io::RingConfig{512, use_iopoll, sq_thread_cpu});
-            monad::io::Ring ring2(monad::io::RingConfig{16}
-                                  /* max concurrent write buffers in use <= 6 */
+            monad::io::Ring ring2(
+                monad::io::RingConfig{16}
+                /* max concurrent write buffers in use <= 6 */
             );
 
             // init buffer
